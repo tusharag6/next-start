@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function Home() {
+export default function Home() {  
   return (
     <Card className="mx-auto mt-4 max-w-md bg-black text-white">
       <CardContent className="pt-6 text-center">
