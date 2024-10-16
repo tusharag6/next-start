@@ -1,13 +1,15 @@
 CREATE TABLE IF NOT EXISTS "session" (
-	"sessionToken" text PRIMARY KEY NOT NULL,
+	"id" text PRIMARY KEY NOT NULL,
 	"userId" uuid NOT NULL,
-	"expires" timestamp NOT NULL
+	"expires_at" timestamp with time zone NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255),
 	"email" varchar(320) NOT NULL,
+	"password" varchar,
+	"emailVerified" timestamp,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

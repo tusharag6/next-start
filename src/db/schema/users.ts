@@ -1,11 +1,12 @@
-import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
-const users = pgTable("user", {
+export const users = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", { length: 255 }),
+  name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 320 }).notNull().unique(),
-//   emailVerified: timestamp("emailVerified", { mode: "date" }),
-//   image: varchar("image", { length: 2048 }).notNull(),
+  password: varchar("password").notNull(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  //   image: varchar("image", { length: 2048 }).notNull(),
 });
 
-export default users;
+export type User = typeof users.$inferSelect;
