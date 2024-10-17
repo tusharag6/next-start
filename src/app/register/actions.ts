@@ -2,13 +2,10 @@
 
 import { redirect } from "next/navigation";
 
+import { setSessionTokenCookie } from "@/app/lib/session";
+import { createSession, generateSessionToken } from "@/auth";
 import { checkEmailAvailability, verifyEmailInput } from "@/email";
 import { verifyPasswordStrength } from "@/password";
-import {
-  createSession,
-  generateSessionToken,
-  setSessionTokenCookie,
-} from "@/session";
 import { createUser, verifyUsernameInput } from "@/user";
 
 export async function signupAction(

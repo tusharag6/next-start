@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import { AppNavbar } from "@/components/app-navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 
+import { AppNavbar } from "./components/app-navbar";
 import "./globals.css";
 
 export const metadata: Metadata = {

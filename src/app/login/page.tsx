@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getCurrentSession } from "@/session";
+import { getCurrentSession } from "@/app/lib/session";
 
 import { LoginForm } from "./login-form";
 
