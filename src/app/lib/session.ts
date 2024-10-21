@@ -3,8 +3,8 @@ import { cache } from "react";
 
 import "server-only";
 
-import { SessionValidationResult, validateSessionToken } from "@/auth";
 import { env } from "@/env/server";
+import { validateSessionToken } from "@/use-cases/sessions";
 
 export function setSessionTokenCookie(token: string, expiresAt: Date): void {
   cookies().set("session", token, {
@@ -26,13 +26,11 @@ export function deleteSessionTokenCookie(): void {
   });
 }
 
-export const getCurrentSession = cache(
-  (): Promise<SessionValidationResult> | SessionValidationResult => {
-    const token = cookies().get("session")?.value ?? null;
-    if (token === null) {
-      return { session: null, user: null };
-    }
-    const result = validateSessionToken(token);
-    return result;
+export const getCurrentSession = cache(() => {
+  const token = cookies().get("session")?.value ?? null;
+  if (token === null) {
+    return { session: null, user: null };
   }
-);
+  const result = validateSessionToken(token);
+  return result;
+});

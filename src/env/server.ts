@@ -60,6 +60,7 @@ export const env = createEnv({
       .refine((s) => s === "true" || s === "false")
       .transform((s) => s === "true")
       .optional(),
+    SENDGRID_API_KEY: z.string(),
   },
   onValidationError: (error: ZodError) => {
     console.error(

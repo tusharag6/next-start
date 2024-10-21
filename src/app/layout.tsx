@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 import { AppNavbar } from "./components/app-navbar";
 import "./globals.css";
@@ -33,6 +34,7 @@ export default function RootLayout({
           <AppNavbar />
           <main className="flex-grow overflow-auto bg-[url(/light-bg.svg)] bg-cover dark:bg-[url(/dark-bg.svg)]">
             {children}
+            <Toaster />
           </main>
         </ThemeProvider>
       </body>
