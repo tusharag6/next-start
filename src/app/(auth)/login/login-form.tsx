@@ -136,8 +136,8 @@ export function LoginForm() {
               </LoaderButton>
             </form>
           </Form>
-          <Button variant="outline" className="w-full">
-            Login with Google
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/api/login/google">Login with Google</Link>
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">

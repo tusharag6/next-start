@@ -1,19 +1,13 @@
 import { eq, sql } from "drizzle-orm";
 
 import db from "@/db";
-import { users } from "@/db/schema";
+import { accounts, users } from "@/db/schema";
 
-export async function createUser(
-  email: string,
-  password: string,
-  name: string
-) {
+export async function createUser(email: string) {
   const [user] = await db
     .insert(users)
     .values({
-      name,
       email,
-      password,
     })
     .returning();
   return user;
@@ -44,4 +38,16 @@ export async function isEmailAvailable(email: string): Promise<boolean> {
     .where(eq(users.email, email));
 
   return result[0].count === 0;
+}
+
+export async function createAccountViaGoogle(userId: string, googleId: string) {
+  await db
+    .insert(accounts)
+    .values({
+      userId: userId,
+      accountType: "google",
+      googleId,
+    })
+    .onConflictDoNothing()
+    .returning();
 }

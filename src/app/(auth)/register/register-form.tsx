@@ -160,8 +160,8 @@ export function RegisterForm() {
             </form>
           </Form>
 
-          <Button variant="outline" className="w-full">
-            Register with Google
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/api/login/google">Register with Google</Link>
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">

@@ -2,8 +2,15 @@ import { sha1 } from "@oslojs/crypto/sha1";
 import { encodeHexLowerCase } from "@oslojs/encoding";
 import { hash, verify } from "argon2";
 
+import { GoogleUser } from "@/app/api/login/google/callback/route";
 import { getCurrentSession } from "@/app/lib/session";
-import { createUser, getUserByEmail } from "@/data-access/users";
+import { createAccount, getAccountByUserId } from "@/data-access/accounts";
+import { createProfile } from "@/data-access/profiles";
+import {
+  createAccountViaGoogle,
+  createUser,
+  getUserByEmail,
+} from "@/data-access/users";
 
 import { AuthenticationError, LoginError, PublicError } from "./errors";
 
@@ -63,7 +70,10 @@ export async function registerUserUseCase(
 
   const passwordHash = await hashPassword(password);
 
-  const user = await createUser(email, passwordHash, name);
+  const user = await createUser(email);
+  await createAccount(user.id, passwordHash);
+
+  await createProfile(user.id, name);
 
   return { id: user.id };
 }
@@ -75,9 +85,19 @@ export async function signInUseCase(email: string, password: string) {
     throw new LoginError();
   }
 
-  const passwordHash = user?.password || "";
+  const account = await getAccountByUserId(user.id);
 
-  const isPasswordCorrect = await verifyPassword(passwordHash, password);
+  if (!account) {
+    return false;
+  }
+
+  const savedPassword = account.password;
+
+  if (!savedPassword) {
+    return false;
+  }
+
+  const isPasswordCorrect = await verifyPassword(savedPassword, password);
 
   if (!isPasswordCorrect) {
     throw new LoginError();
@@ -93,3 +113,17 @@ export const assertAuthenticated = async () => {
   }
   return user;
 };
+
+export async function createGoogleUserUseCase(googleUser: GoogleUser) {
+  let existingUser = await getUserByEmail(googleUser.email);
+
+  if (!existingUser) {
+    existingUser = await createUser(googleUser.email);
+  }
+
+  await createAccountViaGoogle(existingUser.id, googleUser.sub);
+
+  await createProfile(existingUser.id, googleUser.name, googleUser.picture);
+
+  return existingUser.id;
+}

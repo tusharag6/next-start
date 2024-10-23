@@ -17,7 +17,6 @@ const constructDatabaseUrl = (
 export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "production"]),
-    ENCRYPTION_KEY: z.string(),
     DB_HOST: z.string(),
     DB_USER: z.string(),
     DB_PASSWORD: z.string(),
@@ -61,6 +60,8 @@ export const env = createEnv({
       .transform((s) => s === "true")
       .optional(),
     SENDGRID_API_KEY: z.string(),
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
   },
   onValidationError: (error: ZodError) => {
     console.error(
